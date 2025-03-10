@@ -1,5 +1,6 @@
 package lk.ijse.gdse68.hotelbookingsystem.service.impl;
 
+import lk.ijse.gdse68.hotelbookingsystem.exception.ResourceNotFoundException;
 import lk.ijse.gdse68.hotelbookingsystem.model.Room;
 import lk.ijse.gdse68.hotelbookingsystem.repository.RoomRepository;
 import lk.ijse.gdse68.hotelbookingsystem.service.RoomService;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +39,23 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<String> getAllRoomTypes() {
         return roomRepository.findDistinctRoomTypes();
+    }
+
+    @Override
+    public List<Room> getAllRooms() {
+        return roomRepository.findAll();
+    }
+
+    @Override
+    public byte[] getRoomPhotoByRoomId(Long roomId) throws SQLException {
+        Optional<Room> room = roomRepository.findById(roomId);
+        if (room.isEmpty()){
+            throw new ResourceNotFoundException("Room not found for id : " + roomId);
+        }
+        Blob blob = room.get().getPhoto();
+        if (blob != null){
+            return blob.getBytes(1, (int) blob.length());
+        }
+        return null;
     }
 }

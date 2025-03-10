@@ -1,6 +1,7 @@
 package lk.ijse.gdse68.hotelbookingsystem.exception;
 
-public class ResourceNotFoundException extends Throwable {
-    public ResourceNotFoundException(String s) {
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
     }
 }
