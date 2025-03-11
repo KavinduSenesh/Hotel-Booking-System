@@ -10,6 +10,6 @@ import java.util.List;
 public class BookedRoomServiceImpl implements BookedRoomService {
     @Override
     public List<BookedRoom> getAllBookingsByRoomId(Long id) {
-        return List.of();
+        return null;
     }
 }

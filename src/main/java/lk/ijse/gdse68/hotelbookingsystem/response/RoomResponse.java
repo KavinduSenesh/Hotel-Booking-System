@@ -1,5 +1,6 @@
 package lk.ijse.gdse68.hotelbookingsystem.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class RoomResponse {
     private Long id;
     private String roomType;
@@ -23,12 +25,12 @@ public class RoomResponse {
         this.roomPrice = roomPrice;
     }
 
-    public RoomResponse(Long id, String roomType, BigDecimal roomPrice, byte[] photoByte, List<BookingResponse> bookings, boolean isBooked) {
+    public RoomResponse(Long id, String roomType, BigDecimal roomPrice, byte[] photoByte /*List<BookingResponse> bookings*/, boolean isBooked) {
         this.id = id;
         this.roomType = roomType;
         this.roomPrice = roomPrice;
         this.photo = photoByte != null ? Base64.encodeBase64String(photoByte) : null;
-        this.bookings = bookings;
+//        this.bookings = bookings;
         this.isBooked = isBooked;
     }
 }
