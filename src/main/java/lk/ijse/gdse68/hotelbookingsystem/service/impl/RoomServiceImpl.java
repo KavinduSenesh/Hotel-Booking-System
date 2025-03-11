@@ -58,4 +58,12 @@ public class RoomServiceImpl implements RoomService {
         }
         return null;
     }
+
+    @Override
+    public void deleteRoom(Long id) {
+       Optional<Room> room = roomRepository.findById(id);
+       if (room.isPresent()){
+           roomRepository.deleteById(id);
+       }
+    }
 }
