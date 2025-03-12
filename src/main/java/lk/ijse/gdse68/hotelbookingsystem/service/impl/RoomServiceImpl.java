@@ -1,5 +1,6 @@
 package lk.ijse.gdse68.hotelbookingsystem.service.impl;
 
+import lk.ijse.gdse68.hotelbookingsystem.exception.InternalServerException;
 import lk.ijse.gdse68.hotelbookingsystem.exception.ResourceNotFoundException;
 import lk.ijse.gdse68.hotelbookingsystem.model.Room;
 import lk.ijse.gdse68.hotelbookingsystem.repository.RoomRepository;
@@ -65,5 +66,31 @@ public class RoomServiceImpl implements RoomService {
        if (room.isPresent()){
            roomRepository.deleteById(id);
        }
+    }
+
+    @Override
+    public Room updateRoom(Long id, String roomType, BigDecimal roomPrice, byte[] photoByte) {
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Room not found for id : " + id));
+        if (roomType != null){
+            room.setRoomType(roomType);
+        }
+        if (roomPrice != null){
+            room.setRoomPrice(roomPrice);
+        }
+        if (photoByte != null && photoByte.length > 0){
+            try{
+                room.setPhoto(new SerialBlob(photoByte));
+            }catch (SQLException e){
+                throw new InternalServerException("Error occurred while updating photo for room id : " + id);
+            }
+        }
+        roomRepository.save(room);
+        return room;
+    }
+
+    @Override
+    public Optional<Room> getRoomById(Long id) {
+        return Optional.of(roomRepository.findById(id).get());
     }
 }

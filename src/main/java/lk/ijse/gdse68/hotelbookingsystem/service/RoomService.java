@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface RoomService {
@@ -20,4 +21,8 @@ public interface RoomService {
     byte[] getRoomPhotoByRoomId(Long roomId) throws SQLException;
 
     void deleteRoom(Long id);
+
+    Room updateRoom(Long id, String roomType, BigDecimal roomPrice, byte[] photoByte);
+
+    Optional<Room> getRoomById(Long id);
 }
