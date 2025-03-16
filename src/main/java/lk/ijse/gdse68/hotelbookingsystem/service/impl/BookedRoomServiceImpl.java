@@ -12,4 +12,9 @@ public class BookedRoomServiceImpl implements BookedRoomService {
     public List<BookedRoom> getAllBookingsByRoomId(Long id) {
         return null;
     }
+
+    @Override
+    public List<BookedRoom> getAllBookings() {
+        return List.of();
+    }
 }
