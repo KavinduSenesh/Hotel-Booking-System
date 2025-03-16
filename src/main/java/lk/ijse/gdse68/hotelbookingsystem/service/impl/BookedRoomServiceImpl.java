@@ -32,7 +32,7 @@ public class BookedRoomServiceImpl implements BookedRoomService {
 
     @Override
     public BookedRoom findBookingByConfirmationCode(String confirmationCode) {
-        return null;
+        return bookedRoomRepository.findByBookingConfirmationCode(confirmationCode);
     }
 
     @Override
