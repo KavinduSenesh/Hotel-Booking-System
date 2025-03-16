@@ -3,8 +3,11 @@ package lk.ijse.gdse68.hotelbookingsystem.controller;
 import lk.ijse.gdse68.hotelbookingsystem.exception.InvalidBookingRequestException;
 import lk.ijse.gdse68.hotelbookingsystem.exception.ResourceNotFoundException;
 import lk.ijse.gdse68.hotelbookingsystem.model.BookedRoom;
+import lk.ijse.gdse68.hotelbookingsystem.model.Room;
 import lk.ijse.gdse68.hotelbookingsystem.response.BookingResponse;
+import lk.ijse.gdse68.hotelbookingsystem.response.RoomResponse;
 import lk.ijse.gdse68.hotelbookingsystem.service.BookedRoomService;
+import lk.ijse.gdse68.hotelbookingsystem.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import java.util.List;
 @RequestMapping("/bookings")
 public class BookedRoomController {
     private final BookedRoomService bookedRoomService;
+    private final RoomService roomService;
 
     @GetMapping("/get/all-bookings")
     public ResponseEntity<List<BookingResponse>> getAllBookings(){
@@ -41,7 +45,7 @@ public class BookedRoomController {
         }
     }
 
-
+    @PostMapping("save/booking/{roomId}")
     public ResponseEntity<?> saveBooking(@PathVariable long roomId, @RequestBody BookedRoom bookingRequest){
         try{
             String confirmationCode = bookedRoomService.saveBooking(roomId, bookingRequest);
@@ -49,5 +53,28 @@ public class BookedRoomController {
         }catch (InvalidBookingRequestException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+
+    @DeleteMapping("/delete/booking/{bookingId}")
+    public void cancelBooking(@PathVariable Long bookingId){
+        bookedRoomService.cancelBooking(bookingId);
+    }
+
+    private BookingResponse getBookingResponse(BookedRoom booking) {
+        Room room = roomService.getRoomById(booking.getRoom().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
+        RoomResponse roomResponse = new RoomResponse(room.getId(), room.getRoomType(), room.getRoomPrice());
+        return new BookingResponse(
+                booking.getBookingId(),
+                booking.getCheckInDate(),
+                booking.getCheckOutDate(),
+                booking.getGuestFullName(),
+                booking.getGuestEmail(),
+                booking.getNumOfAdults(),
+                booking.getNumOfChildren(),
+                booking.getTotalNumOfGuests(),
+                booking.getBookingConfirmationCode(),
+                roomResponse
+        );
     }
 }
