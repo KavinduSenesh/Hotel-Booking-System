@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/bookings")
+@CrossOrigin("*")
 public class BookedRoomController {
     private final BookedRoomService bookedRoomService;
     private final RoomService roomService;
