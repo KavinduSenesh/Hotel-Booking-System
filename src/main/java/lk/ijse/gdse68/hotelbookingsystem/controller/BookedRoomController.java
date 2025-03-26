@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/bookings")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class BookedRoomController {
     private final BookedRoomService bookedRoomService;
     private final RoomService roomService;
@@ -64,7 +64,10 @@ public class BookedRoomController {
     private BookingResponse getBookingResponse(BookedRoom booking) {
         Room room = roomService.getRoomById(booking.getRoom().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
-        RoomResponse roomResponse = new RoomResponse(room.getId(), room.getRoomType(), room.getRoomPrice());
+        RoomResponse roomResponse = new RoomResponse(
+                room.getId(),
+                room.getRoomType(),
+                room.getRoomPrice());
         return new BookingResponse(
                 booking.getBookingId(),
                 booking.getCheckInDate(),

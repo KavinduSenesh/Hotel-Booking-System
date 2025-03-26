@@ -97,31 +97,23 @@ public class RoomController {
 
     private RoomResponse getRoomResponse(Room room) {
         List<BookedRoom> bookings = getAllBookingsByRoomId(room.getId());
-//        List<BookingResponse> bookingInfo = bookings
-//                .stream()
-//                .map(booking -> new BookingResponse(
-//                        booking.getBookingId(),
-//                        booking.getCheckInDate(),
-//                        booking.getCheckOutDate(),
-//                        booking.getBookingConfirmationCode()
-//                        )).toList();
-        byte[] photoByte = null;
-        Blob photoBlog = room.getPhoto();
-        if (photoBlog != null) {
+        List<BookingResponse> bookingInfo = bookings
+                .stream()
+                .map(booking -> new BookingResponse(booking.getBookingId(),
+                        booking.getCheckInDate(),
+                        booking.getCheckOutDate(), booking.getBookingConfirmationCode())).toList();
+        byte[] photoBytes = null;
+        Blob photoBlob = room.getPhoto();
+        if (photoBlob != null) {
             try {
-                photoByte = photoBlog.getBytes(1, (int) photoBlog.length());
+                photoBytes = photoBlob.getBytes(1, (int) photoBlob.length());
             } catch (SQLException e) {
-                throw new PhotoRetrievingException("Error occurred while retrieving photo for room id : " + room.getId());
+                throw new PhotoRetrievingException("Error retrieving photo");
             }
         }
-        return new RoomResponse(
-                room.getId(),
-                room.getRoomType(),
-                room.getRoomPrice(),
-                photoByte,
-//                bookingInfo,
-                room.isBooked()
-                );
+        return new RoomResponse(room.getId(),
+                room.getRoomType(), room.getRoomPrice(),
+                room.isBooked(), photoBytes, bookingInfo);
     }
 
     private List<BookedRoom> getAllBookingsByRoomId(Long id) {
