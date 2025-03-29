@@ -3,7 +3,9 @@ package lk.ijse.gdse68.hotelbookingsystem.service;
 import lk.ijse.gdse68.hotelbookingsystem.model.BookedRoom;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface BookedRoomService {

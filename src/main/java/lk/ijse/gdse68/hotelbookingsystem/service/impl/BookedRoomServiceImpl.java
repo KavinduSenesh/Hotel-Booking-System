@@ -1,6 +1,7 @@
 package lk.ijse.gdse68.hotelbookingsystem.service.impl;
 
 import lk.ijse.gdse68.hotelbookingsystem.exception.InvalidBookingRequestException;
+import lk.ijse.gdse68.hotelbookingsystem.exception.ResourceNotFoundException;
 import lk.ijse.gdse68.hotelbookingsystem.model.BookedRoom;
 import lk.ijse.gdse68.hotelbookingsystem.model.Room;
 import lk.ijse.gdse68.hotelbookingsystem.repository.BookedRoomRepository;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -32,7 +34,8 @@ public class BookedRoomServiceImpl implements BookedRoomService {
 
     @Override
     public BookedRoom findBookingByConfirmationCode(String confirmationCode) {
-        return bookedRoomRepository.findByBookingConfirmationCode(confirmationCode);
+        return bookedRoomRepository.findByBookingConfirmationCode(confirmationCode)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with confirmation code: " + confirmationCode));
     }
 
     @Override
