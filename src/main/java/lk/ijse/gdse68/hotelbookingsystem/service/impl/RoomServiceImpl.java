@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,5 +93,10 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Optional<Room> getRoomById(Long id) {
         return Optional.of(roomRepository.findById(id).get());
+    }
+
+    @Override
+    public List<Room> getAvailableRooms(LocalDate checkInData, LocalDate checkOutData, String roomType) {
+        return roomRepository.findAvailableRoomsByDatesAndType(checkInData, checkOutData, roomType);
     }
 }
