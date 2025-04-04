@@ -99,10 +99,10 @@ public class RoomController {
 
     @GetMapping("/get/available-rooms")
     public ResponseEntity<List<RoomResponse>> getAvailableRooms(
-            @RequestParam("checkInDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate cheInData,
-            @RequestParam("checkOutDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate cheOutData,
+            @RequestParam("checkInDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInData,
+            @RequestParam("checkOutDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutData,
             @RequestParam("roomType") String roomType) throws SQLException {
-        List<Room> availableRooms = roomService.getAvailableRooms(cheInData, cheOutData, roomType);
+        List<Room> availableRooms = roomService.getAvailableRooms(checkInData, checkOutData, roomType);
         List<RoomResponse> roomResponses = new ArrayList<>();
         for (Room room : availableRooms){
             byte[] photoBytes = roomService.getRoomPhotoByRoomId(room.getId());
