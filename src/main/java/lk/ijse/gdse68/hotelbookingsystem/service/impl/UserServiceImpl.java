@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistsException(user.getEmail() + " already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Roles userRole = roleRepository.findByName("ROLE_USER").get();
+        Roles userRole = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Role not found"));
         user.setRoles(Collections.singletonList(userRole));
         return userRepository.save(user);
     }

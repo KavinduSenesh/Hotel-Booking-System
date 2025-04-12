@@ -1,6 +1,7 @@
 package lk.ijse.gdse68.hotelbookingsystem.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jdk.jfr.DataAmount;
 import lombok.Data;
 import lombok.Getter;
@@ -20,7 +21,9 @@ public class User {
     private Long id;
     private String firstName;
     private String lastName;
+    @NotBlank(message = "Email is required")
     private String email;
+    @NotBlank(message = "Password is required")
     private String password;
 
     @ManyToMany(
