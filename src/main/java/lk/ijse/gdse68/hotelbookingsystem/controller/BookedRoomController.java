@@ -11,6 +11,7 @@ import lk.ijse.gdse68.hotelbookingsystem.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class BookedRoomController {
     private final RoomService roomService;
 
     @GetMapping("/get/all-bookings")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<BookingResponse>> getAllBookings(){
         List<BookedRoom> bookings = bookedRoomService.getAllBookings();
         List<BookingResponse> bookingResponses = new ArrayList<>();
@@ -43,6 +45,17 @@ public class BookedRoomController {
         }catch (ResourceNotFoundException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
+    }
+
+    @GetMapping("/get/user/{userEmail}")
+    public ResponseEntity<List<BookingResponse>> getBookingsByUserEmail(@PathVariable String userEmail){
+        List<BookedRoom> bookings = bookedRoomService.getBookingsByEmail(userEmail);
+        List<BookingResponse> bookingResponses = new ArrayList<>();
+        for (BookedRoom bookedRoom : bookings) {
+            BookingResponse bookingResponse = getBookingResponse(bookedRoom);
+            bookingResponses.add(bookingResponse);
+        }
+        return ResponseEntity.ok(bookingResponses);
     }
 
     @PostMapping("save/booking/{roomId}")

@@ -60,6 +60,11 @@ public class BookedRoomServiceImpl implements BookedRoomService {
         bookedRoomRepository.deleteById(bookingId);
     }
 
+    @Override
+    public List<BookedRoom> getBookingsByEmail(String userEmail) {
+        return bookedRoomRepository.findByGuestEmail(userEmail);
+    }
+
 
     private boolean roomIsAvailable(BookedRoom bookingRequest, List<BookedRoom> existingBookings) {
         return existingBookings.stream()
