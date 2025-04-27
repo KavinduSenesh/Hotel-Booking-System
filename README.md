@@ -1,6 +1,7 @@
 # Hotel Booking System
 
 ## Description
+
 The **Hotel Booking System** is a web application designed for hotel management and booking. This system allows users to search for hotels, view available rooms, and make reservations online. Hotel owners and administrators can manage room availability, pricing, and bookings through an intuitive admin interface.
 
 ## Features
